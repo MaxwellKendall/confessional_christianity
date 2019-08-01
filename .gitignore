@@ -1,2 +1,4 @@
 .vscode
 venv
+confessional_christianity_api/.env
+*.pyc
