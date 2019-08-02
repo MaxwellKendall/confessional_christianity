@@ -43,7 +43,7 @@ class Command(BaseCommand):
             print("yizo", newChapter)
             successMsg = "The chapter of the Confession entitled", newChapter.title, ", was successfully saved to database!"
             self.stdout.write(self.style.SUCCESS(successMsg))
-            # newChapter.save()
+            newChapter.save()
         successMsg = "All ", len(wcfArray), " chapters of the Westminster Confession of Faith have been successfully saved to the database!"
         self.stdout.write(self.style.SUCCESS(successMsg))
 
