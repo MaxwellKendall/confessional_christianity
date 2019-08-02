@@ -14,7 +14,7 @@ import os
 from dotenv import load_dotenv
 import boto3
 
-ssm = boto3.client('ssm')
+ssm = boto3.client('ssm', region_name='us-east-1')
 
 def _get_ssm_key(name):
   key = ssm.get_parameter(Name=name, WithDecryption=False)
