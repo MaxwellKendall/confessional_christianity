@@ -20,9 +20,6 @@ class Command(BaseCommand):
         return paragraphsForChapter
     def parse_proofs(self, arrayOfProofs):
         proof_map = {}
-        # arrayOfWordsInProof = list(
-        #     filter(lambda item: item != 'WCF_PROOF', arrayOfProofs)
-        # )
         for proof in arrayOfProofs:
             parsedProof = proof.strip()
             proofReference = parsedProof[0]
@@ -31,7 +28,6 @@ class Command(BaseCommand):
     def build_chapter(self, data):
         firstParagraphIndex = data.index('__WCF_PARAGRAPH__')
         firstProofIndex = data.index('WCF_PROOF') - 1
-
         arrayOfProofs = ' '.join(data[firstProofIndex + 1:]).strip().split('WCF_PROOF')[1:]
         chapterAsString = ' '.join(data[firstParagraphIndex:firstProofIndex]).strip()
         arrayOfParagraphs = chapterAsString.split('__WCF_PARAGRAPH__')[1:]
@@ -41,16 +37,17 @@ class Command(BaseCommand):
             'proofs': self.parse_proofs(arrayOfProofs)
         }
     def write_to_db(self, wcf):
-        print('Title: ', wcf[0]['title'])
-        print('First Paragraph: ', wcf[0]['paragraphs'][0])
-        print('First Proof: ', wcf[0]['proofs']['a'])
-        print('ID For Chapter: ', wcf[0]['id'])
+        # for chapter in wcf:
+        print('Title: ', wcf[2]['title'])
+        print('First Paragraph: ', wcf[2]['paragraphs'][0])
+        print('First Proof: ', wcf[2]['proofs']['a'])
+        print('ID For Chapter: ', wcf[2]['id'])
 
     def handle(self, *args, **options):
         arrayOfWcfChapters = []
         wcf = open("confessional_christianity_api/data/WCF.txt").read().split('__WCF_CHAPTER__')
         for index, chapter in enumerate(wcf[1:]):
-            obj = self.build_chapter(chapter.replace('\n', '').split(' '))
+            obj = self.build_chapter(chapter.replace('\n', ' ').split(' '))
             obj['id'] = 'WCF_' + str(index + 1)
             arrayOfWcfChapters.append(obj)
         self.write_to_db(arrayOfWcfChapters)
