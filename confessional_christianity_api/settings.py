@@ -44,7 +44,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://confessional-christianity-dev.us-east-1.elasticbeanstalk.com/']
 
 
 # Application definition
