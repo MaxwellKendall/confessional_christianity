@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = os.getenv('DEBUG')
 
 # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('CCDJANGO_SECRET_KEY')
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
