@@ -1,6 +1,8 @@
 import os
 import re
 from django.core.management.base import BaseCommand
+from django.contrib.postgres.fields import JSONField, ArrayField
+
 from wcf.models import wcf
 
 class Command(BaseCommand):
@@ -13,9 +15,7 @@ class Command(BaseCommand):
     def parse_paragraphs(self, arrayOfParagraphs):
         paragraphsForChapter = []
         for paragraph in arrayOfParagraphs:
-            arrayOfWordsInParagraph = list(
-                filter(lambda item: item != '__WCF_SCRIPTURE_REF' and self.remove_numbers(item), paragraph.strip().split(' '))
-            )
+            arrayOfWordsInParagraph = list(filter(lambda item: item != '__WCF_SCRIPTURE_REF' and self.remove_numbers(item), paragraph.strip().split(' ')))
             paragraphsForChapter.append(' '.join(arrayOfWordsInParagraph).strip())
         return paragraphsForChapter
     def parse_proofs(self, arrayOfProofs):
@@ -36,12 +36,14 @@ class Command(BaseCommand):
             'title': self.parse_title(data[:firstParagraphIndex]),
             'proofs': self.parse_proofs(arrayOfProofs)
         }
-    def write_to_db(self, wcf):
-        # for chapter in wcf:
-        print('Title: ', wcf[2]['title'])
-        print('First Paragraph: ', wcf[2]['paragraphs'][0])
-        print('First Proof: ', wcf[2]['proofs']['a'])
-        print('ID For Chapter: ', wcf[2]['id'])
+    def write_to_db(self, wcfArray):
+        for index, chapter in enumerate(wcfArray):
+            print("Chapter, ", chapter['paragraphs'])
+            newChapter = wcf(id=chapter['id'], chapter_number=index + 1, title=chapter['title'], proofs=chapter['proofs'], paragraphs=chapter['paragraphs'])
+            print("yizo", newChapter)
+            self.stdout.write(self.style.SUCCESS("The chapter of the Confession entitled", newChapter.title, ", was successfully saved to database!"))
+            # newChapter.save()
+        self.stdout.write(self.style.SUCCESS("All ", len(wcfArray), " chapters of the Westminster Confession of Faith have been successfully saved to the database!"))
 
     def handle(self, *args, **options):
         arrayOfWcfChapters = []
