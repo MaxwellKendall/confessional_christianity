@@ -1,6 +1,6 @@
 .vscode
 venv
-confessional_christianity_api/.env
+confessional_christianity/confessional_christianity_api/.env
 *.pyc
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
