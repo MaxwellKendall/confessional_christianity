@@ -66,7 +66,7 @@ else:
         }
     }
 
-ALLOWED_HOSTS = ['http://confessional-christianity-dev.us-east-1.elasticbeanstalk.com/', 'http://confessional-christianity-test.us-east-1.elasticbeanstalk.com/', '127.0.0.1']
+ALLOWED_HOSTS = ['http://test.esvz7kcqhk.us-east-1.elasticbeanstalk.com/', '127.0.0.1']
 
 
 # Application definition
