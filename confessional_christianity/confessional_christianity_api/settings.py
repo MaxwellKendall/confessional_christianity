@@ -66,7 +66,7 @@ else:
         }
     }
 
-ALLOWED_HOSTS = ['.elasticbeanstalk.com/', '127.0.0.1']
+ALLOWED_HOSTS = ['test.esvz7kcqhk.us-east-1.elasticbeanstalk.com']
 
 
 # Application definition
