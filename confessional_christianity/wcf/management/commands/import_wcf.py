@@ -38,13 +38,11 @@ class Command(BaseCommand):
         }
     def write_to_db(self, wcfArray):
         for index, chapter in enumerate(wcfArray):
-            print("Chapter, ", chapter['paragraphs'])
             newChapter = wcf(id=chapter['id'], chapter_number=index + 1, title=chapter['title'], proofs=chapter['proofs'], paragraphs=chapter['paragraphs'])
-            print("yizo", newChapter)
-            successMsg = "The chapter of the Confession entitled", newChapter.title, ", was successfully saved to database!"
+            successMsg = "The chapter of the Confession entitled " + newChapter.title + " was successfully saved to database!"
             self.stdout.write(self.style.SUCCESS(successMsg))
             newChapter.save()
-        successMsg = "All ", len(wcfArray), " chapters of the Westminster Confession of Faith have been successfully saved to the database!"
+        successMsg = "All " + str(len(wcfArray)) + " chapters of the Westminster Confession of Faith have been successfully saved to the database!"
         self.stdout.write(self.style.SUCCESS(successMsg))
 
     def handle(self, *args, **options):
