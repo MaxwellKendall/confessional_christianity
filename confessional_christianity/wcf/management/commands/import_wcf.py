@@ -49,7 +49,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         arrayOfWcfChapters = []
-        wcf = open("confessional_christianity_api/data/WCF.txt").read().split('__WCF_CHAPTER__')
+        wcf = open("confessional_christianity/confessional_christianity_api/data/WCF.txt").read().split('__WCF_CHAPTER__')
         for index, chapter in enumerate(wcf[1:]):
             obj = self.build_chapter(chapter.replace('\n', ' ').split(' '))
             obj['id'] = 'WCF_' + str(index + 1)
