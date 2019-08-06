@@ -5,6 +5,9 @@ from django.contrib.postgres.fields import JSONField, ArrayField
 
 from wcf.models import wcf
 
+# parsing scripture proof texts
+regexString = "([0-9]*:[0-9]*-[0-9]*\.)"
+
 class Command(BaseCommand):
     help = 'Populates the DB with the Westminster Confession of Faith :bang!:'
 
@@ -24,6 +27,7 @@ class Command(BaseCommand):
             parsedProof = proof.strip()
             proofReference = parsedProof[0]
             proof_map[proofReference] = parsedProof[2:].strip()
+            print("**********", parsedProof[2:].strip())
         return proof_map
     def build_chapter(self, data):
         firstParagraphIndex = data.index('__WCF_PARAGRAPH__')
@@ -41,7 +45,7 @@ class Command(BaseCommand):
             newChapter = wcf(id=chapter['id'], chapter_number=index + 1, title=chapter['title'], proofs=chapter['proofs'], paragraphs=chapter['paragraphs'])
             successMsg = "The chapter of the Confession entitled " + newChapter.title + " was successfully saved to database!"
             self.stdout.write(self.style.SUCCESS(successMsg))
-            newChapter.save()
+            # newChapter.save()
         successMsg = "All " + str(len(wcfArray)) + " chapters of the Westminster Confession of Faith have been successfully saved to the database!"
         self.stdout.write(self.style.SUCCESS(successMsg))
 
