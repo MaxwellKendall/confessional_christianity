@@ -46,7 +46,7 @@ class Command(BaseCommand):
             newChapter = wcf(id=chapter['id'], chapter_number=index + 1, title=chapter['title'], proofs=chapter['proofs'], paragraphs=chapter['paragraphs'])
             successMsg = "The chapter of the Confession entitled " + newChapter.title + " was successfully saved to database!"
             self.stdout.write(self.style.SUCCESS(successMsg))
-            # newChapter.save()
+            newChapter.save()
         successMsg = "All " + str(len(wcfArray)) + " chapters of the Westminster Confession of Faith have been successfully saved to the database!"
         self.stdout.write(self.style.SUCCESS(successMsg))
 
