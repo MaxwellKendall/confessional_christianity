@@ -6,7 +6,7 @@ from django.contrib.postgres.fields import JSONField, ArrayField
 from wcf.models import wcf
 
 # parsing scripture proof texts
-regexString = "((?:\d\s[A-Z][a-z]*|[A-Z][a-z]*)(?:\.\s|\s)(?:[0-9]*:[0-9]*-[0-9]*\.|[0-9]*:[0-9]*)(?:\.|(?:,\s\d*)*))"
+regexString = "((?:\d\s[A-Z][a-z]*|[A-Z][a-z]*)(?:\.\s|\s)(?:[0-9]*:[0-9]*-[0-9]*|[0-9]*:[0-9]*)(?:|(?:,\s\d*)*))"
 
 class Command(BaseCommand):
     help = 'Populates the DB with the Westminster Confession of Faith :bang!:'
@@ -27,8 +27,7 @@ class Command(BaseCommand):
             parsedProof = proof.strip()
             proofReference = parsedProof[0]
             proofCitations = re.findall(regexString, parsedProof[2:])
-            proof_map[proofReference] = parsedProof[2:].strip()
-            print("**********", proofCitations)
+            proof_map[proofReference] = proofCitations
         return proof_map
     def build_chapter(self, data):
         firstParagraphIndex = data.index('__WCF_PARAGRAPH__')
