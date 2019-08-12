@@ -1,5 +1,6 @@
 # confessional-christianity-api
 
+## Dependency Management
 Dependency management for python projects are done using virtual environments. Like `npm`, we use a global install of the `[virtual_env](https://docs.python-guide.org/dev/virtualenvs/)` module.
 
 1. Global install: `pip install virtualenv`
@@ -18,3 +19,7 @@ To create a `requirements.txt` file, simply freeze the current dependency map wi
 For another developer to duplicate this environment, all they will need to do is run `pip install -r requirements.txt`.
 
 To exit the virtual environment and go back to using the local install of Python with its local modules, execute `deactivate`.
+
+## Using the English Standard Version for API Calls
+Old Testament DAM_ID: `ENGESVO1ET`
+New Testament DAM_ID: `ENGESVN1ET`
