@@ -7,6 +7,7 @@ from wcf.models import wcf
 
 # parsing scripture proof texts
 regexString = "((?:\d\s[A-Z][a-z]*|[A-Z][a-z]*)(?:\.\s|\s)(?:[0-9]*:[0-9]*-[0-9]*|[0-9]*:[0-9]*)(?:|(?:,\s\d*)*))"
+FindScriptureBook = "(((1.{1}[A-Z][a-z]*)|(2\s[A-Z][a-z]*))|[A-Z][a-z]*)"
 
 class Command(BaseCommand):
     help = 'Populates the DB with the Westminster Confession of Faith :bang!:'
