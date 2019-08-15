@@ -7,10 +7,10 @@ from wcf.models import wcf
 
 # parsing scripture proof texts
 regexString = "((?:\d\s[A-Z][a-z]*|[A-Z][a-z]*)(?:\.\s|\s)(?:[0-9]*:[0-9]*-[0-9]*|[0-9]*:[0-9]*)(?:|(?:,\s\d*)*))"
-FindScriptureBook = "((?P<book>((1.{1}[A-Z][a-z]*)|(2\s[A-Z][a-z]*))|[A-Z][a-z]*)"
+FindScriptureBook = "(?P<book>((1.{1}[A-Z][a-z]*)|(2\s[A-Z][a-z]*))|[A-Z][a-z]*)"
 FindScriptureVerses = "(?P<verse>(\d{1,3}:\d{1,3}-\d{1,3}|\d{1,3}:\d{1,3})(:\d{1,3}|(,\s\d{1,3}|\4-\d{1,3})*|\b))"
-newRegexString = "(?P<citation>{book}{verse})".format(book=FindScriptureBook, verse=FindScriptureVerses)
-
+newRegexString = "(?P<citation>{book}(\.\s|\s){verse})".format(book=FindScriptureBook, verse=FindScriptureVerses)
+# "((((1.{1}[A-Z][a-z]*)|(2\s[A-Z][a-z]*))|[A-Z][a-z]*)((\d{1,3}:\d{1,3}-\d{1,3}|\d{1,3}:\d{1,3})(:\d{1,3}|(,\s\d{1,3}|-\d{1,3})*)))"
 class Command(BaseCommand):
     help = 'Populates the DB with the Westminster Confession of Faith :bang!:'
 
@@ -29,8 +29,10 @@ class Command(BaseCommand):
         for proof in arrayOfProofs:
             parsedProof = proof.strip()
             proofReference = parsedProof[0]
-            proofCitations = re.findall(regexString, parsedProof[2:])
+            proofCitations = re.findall(newRegexString, parsedProof[2:])
             proof_map[proofReference] = proofCitations
+            print(proofCitations)
+            print(newRegexString)
         return proof_map
     def build_chapter(self, data):
         firstParagraphIndex = data.index('__WCF_PARAGRAPH__')
@@ -48,7 +50,7 @@ class Command(BaseCommand):
             newChapter = wcf(id=chapter['id'], chapter_number=index + 1, title=chapter['title'], proofs=chapter['proofs'], paragraphs=chapter['paragraphs'])
             successMsg = "The chapter of the Confession entitled " + newChapter.title + " was successfully saved to database!"
             self.stdout.write(self.style.SUCCESS(successMsg))
-            newChapter.save()
+            # newChapter.save()
         successMsg = "All " + str(len(wcfArray)) + " chapters of the Westminster Confession of Faith have been successfully saved to the database!"
         self.stdout.write(self.style.SUCCESS(successMsg))
 
