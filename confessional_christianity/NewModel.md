@@ -37,7 +37,7 @@
 	* scripture = string
 	* tags
 
-getConfession(confessionId)  confessionObj {
+# getConfession(confessionId)  confessionObj {
 ```sql
     select 
         h.title as HeadingTitle,
@@ -47,11 +47,9 @@ getConfession(confessionId)  confessionObj {
     FROM HEADINGS h, CONTENT c, CITATIONS ct
     WHERE h.confessionId = c.confessionId AND c.confessionId = ct.confessionId;
 ```
-
-return [ HeadingObj1, headingObj2, etc… ]
 }
 
-getChapter(headingId) chapterObj {
+# getHeading(headingId) chapterObj {
 ```sql
 	select
 		h.title as HeadingTitle,
@@ -63,7 +61,7 @@ getChapter(headingId) chapterObj {
 ```
 }
 
-getParagraph(contentId) {
+# getParagraph(contentId) {
 ```sql
 	select
 		c.detail as ContentDetail
@@ -74,7 +72,7 @@ getParagraph(contentId) {
 ```
 }
 
-getCitations(tag/confessionId/contentId/headingId) {
+# getCitations(tag/confessionId/contentId/headingId) {
 ```sql
 	select * from CITATIONS where tag in (tag);
 	OR
