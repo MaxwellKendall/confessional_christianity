@@ -1,6 +1,10 @@
 # confessional-christianity-api
+The goal of this project is to create a REST API that returns valuable data on the historic confessions of the Christian faith. This will be an iterative project; first, we will attempt to return the contents of the confessions themselves in a client friendly manner; in the future, we may seek to possibly provide insights on the data itself.
 
-## Dependency Management
+## Technology
+Currently we are using Python and the Django module for scaffolding the API and Postgres for the data layer.
+
+## Dependency Management in Python
 Dependency management for python projects are done using virtual environments. Like `npm`, we use a global install of the [virtual_env](https://docs.python-guide.org/dev/virtualenvs/) module.
 
 1. Global install: `pip install virtualenv`
