@@ -6,10 +6,10 @@
 4. getCitations
 
 # Foreign Keys
-* confessionId = (WCF | WSC | WLC | BLG | HC | CD | 39A)
-* headingId = confessionId + heading_number (WCF_1)
-* contentId = confession_id_heading_number_content_number (WCF_1_2)
-* citationId = contentId_citation_reference (WCF_1_2_A)
+* confessionId = (WCF | WSC | WLC | BLG | HC | CD | 39A = Westminster Confession of Faith, Westminster Shorter Catechism, Westminster Larger Catechism, Belgic Confession, Heidelberg Catechism, Cannons of Dordt, 39 Articles) 
+* headingId = confessionId + heading_number (WCF_1 = westminster confession chapter 1)
+* contentId = confession_id_heading_number_content_number (WCF_1_2 = westminster confession chapter 1 paragraph 2)
+* citationId = contentId_referenceIdentifier (WCF_1_2_A = westminster confession chapter 1 paragraph 2 citation a)
 
 # Tables
 1. CONFESSIONS: (Name of Confession w/ ancillary info)
