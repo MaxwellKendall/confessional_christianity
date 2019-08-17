@@ -13,29 +13,29 @@
 
 # Tables
 1. CONFESSIONS: (Name of Confession w/ ancillary info)
-	—> id (primaryKey) = confessionId
-	—> Date = date of publication
-	—> Summary = historical info
+	* id (primaryKey) = confessionId
+	* Date = date of publication
+	* Summary = historical info
 
 2. HEADINGS: (Questions, Titles)
-	— > id (primaryKey) = headingId
-	—> confessionId (foreignKey1) = confessionId
-	— > title = string 
+	* id (primaryKey) = headingId
+	* confessionId (foreignKey1) = confessionId
+	* title = string 
 	
 3. CONTENT: (Answers, Paragraphs)
-	— > id (primaryKey) = contentId
-	— > headingId (foreignKey1) = headingId
-	—> confessionId (foreignKey2) = confessionId
-	—> detail = string
+	* id (primaryKey) = contentId
+	* headingId (foreignKey1) = headingId
+	* confessionId (foreignKey2) = confessionId
+	* detail = string
 
 4. CITATIONS: (Biblical References)
-	—> id (primaryKey) = citationId
-	—> contentId (foreignKey1) = contentId
-	—> headingId (foreignKey2) = headingId
-	—> confessionId (foreignKey3) = confessionId
-	—> referenceIdentifier = string (e.g. (a), 1/2/3)
-	—> scripture = string
-	—> tags
+	* id (primaryKey) = citationId
+	* contentId (foreignKey1) = contentId
+	* headingId (foreignKey2) = headingId
+	* confessionId (foreignKey3) = confessionId
+	* referenceIdentifier = string (e.g. (a), 1/2/3)
+	* scripture = string
+	* tags
 
 getConfession(confessionId)  confessionObj {
 ```sql
