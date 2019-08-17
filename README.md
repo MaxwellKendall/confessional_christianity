@@ -1,7 +1,7 @@
 # confessional-christianity-api
 
 ## Dependency Management
-Dependency management for python projects are done using virtual environments. Like `npm`, we use a global install of the `[virtual_env](https://docs.python-guide.org/dev/virtualenvs/)` module.
+Dependency management for python projects are done using virtual environments. Like `npm`, we use a global install of the [virtual_env](https://docs.python-guide.org/dev/virtualenvs/) module.
 
 1. Global install: `pip install virtualenv`
 2. Create a virtual env: `virtualenv venv`
