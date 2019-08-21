@@ -27,3 +27,17 @@ To exit the virtual environment and go back to using the local install of Python
 ## Using the English Standard Version for API Calls
 Old Testament DAM_ID: `ENGESVO1ET`
 New Testament DAM_ID: `ENGESVN1ET`
+
+## Natural Language Processing Resources
+Spacy + NLTK.
+
+## Conda
+Similar to both pip & venv as it can (a) manage virutal environments and (b) install non-python modules.
+
+## Data Science
+Jupyter module (Julia, python, R)
+- for interactive notebooks
+Go to directory of Jupyter notebook:
+- Establish conda virtual env
+- With jupyter installed, run `jupyter lab`
+- Opens browser window
