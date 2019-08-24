@@ -77,7 +77,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'wcf.apps.WcfConfig'
+    'wcf.apps.WcfConfig',
+    'confessions.apps.ConfessionsConfig',
+    'citations.apps.CitationsConfig'
 ]
 
 MIDDLEWARE = [
