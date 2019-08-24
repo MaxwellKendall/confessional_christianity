@@ -3,8 +3,8 @@ import re
 from django.core.management.base import BaseCommand
 from django.contrib.postgres.fields import JSONField, ArrayField
 
-from wcf.models import wcf
-from wcf.abbrev import wcf as wcf_abbrev_map
+from citations.models import Citations
+from citations.abbrev import wcf as wcf_abbrev_map
 
 # parsing scripture proof texts
 FindScriptureBook = "(?P<book>((1.{1}[A-Z][a-z]*)|(2\s[A-Z][a-z]*))|[A-Z][a-z]*)"
@@ -61,7 +61,8 @@ class Command(BaseCommand):
         arrayOfWcfChapters = []
         wcf = open("confessional_christianity/confessional_christianity_api/data/WCF.txt").read().split('__WCF_CHAPTER__')
         for index, chapter in enumerate(wcf[1:]):
-            obj = self.build_chapter(chapter.replace('\n', ' ').split(' '))
+            self.get_citations_for_chapter(chapter.replace('\n', ' ').split(' '))
+            obj = self.build_chapter()
             obj['id'] = 'WCF_' + str(index + 1)
             arrayOfWcfChapters.append(obj)
         self.write_to_db(arrayOfWcfChapters)
