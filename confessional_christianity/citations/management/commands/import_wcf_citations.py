@@ -19,13 +19,12 @@ class Command(BaseCommand):
 
     def get_citation_ids_by_paragraph(self, arrayOfParagraphs):
         citationIdsByParagraph = {}
-        for index, paragraph in arrayOfParagraphs:
+        for index, paragraph in enumerate(arrayOfParagraphs):
             citationIdsInParagraph = []
             arrayOfWordsInParagraph = paragraph.strip().split(' ')
             paragraphNumber = index + 1
-            for index, word in arrayOfWordsInParagraph:
+            for index, word in enumerate(arrayOfWordsInParagraph):
                 if word == '__WCF_SCRIPTURE_REF':
-                    print(arrayOfWordsInParagraph[index + 1])
                     citationIdsInParagraph.append(arrayOfWordsInParagraph[index + 1])
             citationIdsByParagraph[paragraphNumber] = citationIdsInParagraph
         return citationIdsByParagraph
@@ -42,7 +41,6 @@ class Command(BaseCommand):
                 book = wcf_abbrev_map[m.group("book")]
                 citations.append(book + " " + m.group("verse"))
             proof_map[proofReference] = citations
-            print(proof_map[proofReference])
         return proof_map
 
     def get_citations_for_chapter(self, chapter, referenceId):
@@ -54,40 +52,40 @@ class Command(BaseCommand):
         citationIdsByParagraph = self.get_citation_ids_by_paragraph(arrayOfParagraphs)
         scriptureReferencesByCitationId = self.parse_proofs(arrayOfProofs)
         citations = []
-        for paragraph, in list(citationIdsByParagraph):
+        for paragraph, c in citationIdsByParagraph.items():
         # assuming there's not two citations with the id "a" for a given chapter... ? 
             for citationID in citationIdsByParagraph[paragraph]:
-                scriptureReference = scriptureReferencesByCitationId[citationID]
+                # citationID[0] excludes the '.' character
+                parsedCitationID = citationID[0]
+                scriptureReference = scriptureReferencesByCitationId[parsedCitationID]
                 citations.append({
-                    "id": referenceId + "_" + paragraph + "_" + citationID,
-                    "referenceIdentifier": citationID,
-                    "scripture": scriptureReference,
+                    "id": referenceId + "_" + str(paragraph) + "_" + parsedCitationID,
+                    "passage_id": referenceId + "_" + str(paragraph),
+                    "heading_id": referenceId,
                     "confession_id": "WCF",
-                    "headingId": citationID,
-                    "tags": [],
-                    "passage_id": citationID + "_" + paragraph
+                    "referenceIdentifier": parsedCitationID,
+                    "scripture": scriptureReference,
+                    "tags": []
                 })
 
         return citations
 
-    def write_to_db(self, citationObj):
-        print("*****", citationObj)
-        newCitation = Citations(id=citationObj['id'], confession_id=citationObj['confessionId'], heading_id=citationObj[headingId], referenceIdentifier=index + 1, scripture=chapter['paragraphs'])
-        # newCitation.save()
-        successMsg = "Citation " + newCitation.id + " was successfully saved to database!"
-        self.stdout.write(self.style.SUCCESS(successMsg))
+    def write_to_db(self, citations):
+        for c, citation in enumerate(citations):
+            # newCitation = Citations(id=citation['id'],passage_id=citation['passage_id'],heading_id=citation['heading_id'],confession_id=citation['confession_id'],referenceIdentifier=citation['referenceIdentifier'],scripture=citation['scripture'],tags=citation['tags'])
+            # newCitation.save()
+            successMsg = "Citation " + citation['id'] + " was successfully saved to database!"
+            self.stdout.write(self.style.SUCCESS(successMsg))
+        # self.stdout.write(self.style.SUCCESS(successMsg))
 
     def handle(self, *args, **options):
         arrayOfWcfChapters = []
         wcf = open("confessional_christianity/confessional_christianity_api/data/WCF.txt").read().split('__WCF_CHAPTER__')
         for index, chapter in enumerate(wcf[1:]):
-            citationId = "WCF_" + index + 1
+            citationId = "WCF_" + str(index + 1)
             chapter = chapter.replace('\n', ' ').split(' ')
-            self.get_citations_for_chapter(chapter, citationId)
-            # obj = self.build_chapter()
-            # obj['id'] = 'WCF_' + str(index + 1)
-            # arrayOfWcfChapters.append(obj)
-        # self.write_to_db(arrayOfWcfChapters)
+            citations = self.get_citations_for_chapter(chapter, citationId)
+            self.write_to_db(citations)
         self.stdout.write(self.style.SUCCESS('Success!!'))
 
 # https://docs.djangoproject.com/en/dev/howto/custom-management-commands/ & https://eli.thegreenplace.net/2014/02/15/programmatically-populating-a-django-database
