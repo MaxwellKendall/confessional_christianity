@@ -71,6 +71,7 @@ class Command(BaseCommand):
         return citations
 
     def write_to_db(self, citations):
+        # Script is dependent on foreign key being in place in passages table. Must do passage import first.
         for c, citation in enumerate(citations):
             # newCitation = Citations(id=citation['id'],passage_id=citation['passage_id'],heading_id=citation['heading_id'],confession_id=citation['confession_id'],referenceIdentifier=citation['referenceIdentifier'],scripture=citation['scripture'],tags=citation['tags'])
             # newCitation.save()
