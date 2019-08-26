@@ -10,9 +10,10 @@ class Confessions(models.Model):
 
     id = models.CharField(primary_key=True, max_length=1000)
     title = models.TextField(blank=True, null=True)
+    authors = models.TextField(blank=True, null=True)
     date = models.TextField(blank=True, null=True)
+    location = models.TextField(blank=True, null=True) 
     summary = models.TextField(blank=True, null=True)
-
 
 class Headings(models.Model):
     def __str__(self):
