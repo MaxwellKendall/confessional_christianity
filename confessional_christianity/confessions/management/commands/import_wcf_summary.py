@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         arrayOfWcfChapters = []
-        wcfSummary = open("confessional_christianity/confessional_christianity_api/data/WCF_Summary.txt").read().split("\n")
+        wcfSummary = open("confessional_christianity/confessional_christianity_api/data/WCF_Summary.txt", 'r', encoding="utf-8").read().split("\n")
         confessionId = self.get_data_by_annotations(wcfSummary, '__CONFESSION_ID__', '__CONFESSION_TITLE__')
         title = self.get_data_by_annotations(wcfSummary, '__CONFESSION_TITLE__', '__CONFESSION_AUTHORS__')
         authors = self.get_data_by_annotations(wcfSummary, '__CONFESSION_AUTHORS__', '__CONFESSION_LOCATION__')
