@@ -3,7 +3,7 @@ import re
 from django.core.management.base import BaseCommand
 from django.contrib.postgres.fields import JSONField, ArrayField
 
-from confessions.models import Passages, Headings
+from confessions.models import Passages, Headings, Confessions
 
 # parsing scripture proof texts
 FindScriptureBook = "(?P<book>((1.{1}[A-Z][a-z]*)|(2\s[A-Z][a-z]*))|[A-Z][a-z]*)"
@@ -35,14 +35,15 @@ class Command(BaseCommand):
         }
     def write_to_db(self, wcfArray):
         for index, chapter in enumerate(wcfArray):
-            heading_id = "WCF_" + str(index + 1) 
-            newHeading = Headings(id=heading_id, confession_id="WCF", title=chapter["title"])
+            heading_id = "WCF_" + str(index + 1)
+            confession = Confessions.objects.get(pk="WCF")
+            newHeading = Headings(id=heading_id, confession=confession, title=chapter["title"])
             newHeading.save()
             successMsg = heading_id + " heading successfully saved to the DB!"
             self.stdout.write(self.style.SUCCESS(successMsg))
             for index, passage in enumerate(chapter['paragraphs']):
                 passage_id = heading_id + "_" + str(index + 1)
-                newPassage = Passages(id=passage_id, heading_id=heading_id, confession_id="WCF", passage=passage)
+                newPassage = Passages(id=passage_id, heading=newHeading, confession=confession, passage=passage)
                 newPassage.save()
                 successMsg = passage_id + " passage successfully saved to the DB!"
                 self.stdout.write(self.style.SUCCESS(successMsg))

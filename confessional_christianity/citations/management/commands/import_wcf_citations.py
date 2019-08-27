@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.postgres.fields import JSONField, ArrayField
 
 from citations.models import Citations
+from confessions.models import Passages, Confessions, Headings
 from citations.abbrev import wcf as wcf_abbrev_map
 
 # parsing scripture proof texts
@@ -51,6 +52,8 @@ class Command(BaseCommand):
         arrayOfParagraphs = chapterAsString.split('__WCF_PARAGRAPH__')[1:]
         citationIdsByParagraph = self.get_citation_ids_by_paragraph(arrayOfParagraphs)
         scriptureReferencesByCitationId = self.parse_proofs(arrayOfProofs)
+        confession = Confessions.objects.get(pk="WCF")
+        heading = Headings.objects.get(pk=referenceId)
         citations = []
         for paragraph, c in citationIdsByParagraph.items():
         # assuming there's not two citations with the id "a" for a given chapter... ? 
@@ -58,11 +61,12 @@ class Command(BaseCommand):
                 # citationID[0] excludes the '.' character
                 parsedCitationID = citationID[0]
                 scriptureReference = scriptureReferencesByCitationId[parsedCitationID]
+                passage = Passages.objects.get(pk=referenceId + "_" + str(paragraph))
                 citations.append({
                     "id": referenceId + "_" + str(paragraph) + "_" + parsedCitationID,
-                    "passage_id": referenceId + "_" + str(paragraph),
-                    "heading_id": referenceId,
-                    "confession_id": "WCF",
+                    "passage": passage,
+                    "heading": heading,
+                    "confession": confession,
                     "referenceIdentifier": parsedCitationID,
                     "scripture": scriptureReference,
                     "tags": []
@@ -73,11 +77,12 @@ class Command(BaseCommand):
     def write_to_db(self, citations):
         # Script is dependent on foreign key being in place in passages table. Must do passage import first.
         for c, citation in enumerate(citations):
-            # newCitation = Citations(id=citation['id'],passage_id=citation['passage_id'],heading_id=citation['heading_id'],confession_id=citation['confession_id'],referenceIdentifier=citation['referenceIdentifier'],scripture=citation['scripture'],tags=citation['tags'])
-            # newCitation.save()
+            newCitation = Citations(id=citation['id'], passage=citation['passage'], heading=citation['heading'], confession=citation['confession'],referenceIdentifier=citation['referenceIdentifier'],scripture=citation['scripture'],tags=citation['tags'])
+            newCitation.save()
             successMsg = "Citation " + citation['id'] + " was successfully saved to database!"
             self.stdout.write(self.style.SUCCESS(successMsg))
-        # self.stdout.write(self.style.SUCCESS(successMsg))
+        finalSuccessMsg = str(len(citations)) + " successfully written to the DB!"
+        self.stdout.write(self.style.SUCCESS(finalSuccessMsg))
 
     def handle(self, *args, **options):
         arrayOfWcfChapters = []

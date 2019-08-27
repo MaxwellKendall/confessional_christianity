@@ -14,12 +14,11 @@ class Command(BaseCommand):
     help = 'Populates the DB Table "Confessions" with historical details about the Westminster Confession of Faith :bang!:'
 
     def get_data_by_annotations(self, data, beginningAnnotation, endAnnotation):
-        print(data)
         beginingIndex = data.index(beginningAnnotation)
         endIndex = data.index(endAnnotation)
         if beginningAnnotation == '__CONFESSION_SUMMARY__':
-            return ' '.join(data[beginingIndex:]).replace(beginningAnnotation, '')
-        return ' '.join(data[beginingIndex:endIndex]).replace(beginningAnnotation, '')
+            return ''.join(data[beginingIndex:]).replace(beginningAnnotation, '')
+        return ''.join(data[beginingIndex:endIndex]).replace(beginningAnnotation, '').strip()
 
     def handle(self, *args, **options):
         arrayOfWcfChapters = []
@@ -30,7 +29,7 @@ class Command(BaseCommand):
         location = self.get_data_by_annotations(wcfSummary, '__CONFESSION_LOCATION__', '__CONFESSION_DATE__')
         date = self.get_data_by_annotations(wcfSummary, '__CONFESSION_DATE__', '__CONFESSION_SUMMARY__')
         summary = self.get_data_by_annotations(wcfSummary, '__CONFESSION_SUMMARY__', '')
-        
+        print(confessionId)
         wcf = Confessions(id=confessionId, title=title, authors=authors, location=location, date=date, summary=summary)
         wcf.save()
         successMsg = "Historical Details like Date (" + date + ") and authors (" +  authors + ") chapters of the Westminster Confession of Faith have been successfully saved to the database!"
