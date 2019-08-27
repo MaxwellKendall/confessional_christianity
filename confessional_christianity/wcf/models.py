@@ -15,7 +15,6 @@ class wcf(models.Model):
     paragraphs = ArrayField(models.TextField())
 
     def get_all_data(self):
-        # Do something here in the future?
         return {
             'title': self.title,
             'paragraphs': self.paragraphs,

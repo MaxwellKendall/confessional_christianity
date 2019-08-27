@@ -71,13 +71,15 @@ ALLOWED_HOSTS = ['test.esvz7kcqhk.us-east-1.elasticbeanstalk.com', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
+    'wcf.apps.WcfConfig',
+    'confessions.apps.ConfessionsConfig',
+    'citations.apps.CitationsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'wcf.apps.WcfConfig'
+    'django.contrib.staticfiles'
 ]
 
 MIDDLEWARE = [

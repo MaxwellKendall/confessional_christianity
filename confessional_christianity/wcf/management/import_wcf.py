@@ -12,7 +12,7 @@ FindScriptureVerses = "(?P<verse>(\d{1,3}:\d{1,3}-\d{1,3}|\d{1,3}:\d{1,3})(:\d{1
 regexString = "(?P<citation>{book}(\.\s|\s){verse})".format(book=FindScriptureBook, verse=FindScriptureVerses)
 
 class Command(BaseCommand):
-    help = 'Populates the DB with the Westminster Confession of Faith :bang!:'
+    help = 'Populates the DB with the Biblical Citations from the Westminster Confession of Faith'
 
     def remove_numbers(self, char):
         return char != "1." and char != "2." and char != "3." and char != "4." and char != "5." and char != "6." and char != "7." and char != "8." and char != "9." and char != "10." and char != "11." and char != "12." and char != "13." and char != "14." and char != "15." and char != "16."
