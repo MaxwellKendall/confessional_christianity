@@ -24,3 +24,6 @@ class Citations(models.Model):
             'citationId': self.id,
             'heading': self.heading.title,
         }
+    
+    def count_scripture_references(self):
+        return len(self.scripture)
