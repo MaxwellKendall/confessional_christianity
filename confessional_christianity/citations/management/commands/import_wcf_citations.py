@@ -56,7 +56,6 @@ class Command(BaseCommand):
         heading = Headings.objects.get(pk=referenceId)
         citations = []
         for paragraph, c in citationIdsByParagraph.items():
-        # assuming there's not two citations with the id "a" for a given chapter... ? 
             for citationID in citationIdsByParagraph[paragraph]:
                 # citationID[0] excludes the '.' character
                 parsedCitationID = citationID[0]
