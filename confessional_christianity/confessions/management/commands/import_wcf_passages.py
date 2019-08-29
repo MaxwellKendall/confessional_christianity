@@ -37,13 +37,13 @@ class Command(BaseCommand):
         for index, chapter in enumerate(wcfArray):
             heading_id = "WCF_" + str(index + 1)
             confession = Confessions.objects.get(pk="WCF")
-            newHeading = Headings(id=heading_id, confession=confession, title=chapter["title"])
+            newHeading = Headings(id=heading_id, confession=confession, position=int(index + 1), title=chapter["title"])
             newHeading.save()
             successMsg = heading_id + " heading successfully saved to the DB!"
             self.stdout.write(self.style.SUCCESS(successMsg))
             for index, passage in enumerate(chapter['paragraphs']):
                 passage_id = heading_id + "_" + str(index + 1)
-                newPassage = Passages(id=passage_id, heading=newHeading, confession=confession, passage=passage)
+                newPassage = Passages(id=passage_id, heading=newHeading, confession=confession, position=int(index + 1), passage=passage)
                 newPassage.save()
                 successMsg = passage_id + " passage successfully saved to the DB!"
                 self.stdout.write(self.style.SUCCESS(successMsg))
