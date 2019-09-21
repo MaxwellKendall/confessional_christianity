@@ -44,7 +44,7 @@ class Command(BaseCommand):
             proof_map[proofReference] = citations
         return proof_map
 
-    def get_citations_for_chapter(self, chapter, referenceId):
+    def get_citations_for_chapter(self, chapter, chapterNumber):
         firstParagraphIndex = chapter.index('__WCF_PARAGRAPH__')
         firstProofIndex = chapter.index('WCF_PROOF') - 1
         arrayOfProofs = ' '.join(chapter[firstProofIndex + 1:]).strip().split('WCF_PROOF')[1:]
@@ -53,21 +53,23 @@ class Command(BaseCommand):
         citationIdsByParagraph = self.get_citation_ids_by_paragraph(arrayOfParagraphs)
         scriptureReferencesByCitationId = self.parse_proofs(arrayOfProofs)
         confession = Confessions.objects.get(pk="WCF")
-        heading = Headings.objects.get(pk=referenceId)
+        heading = Headings.objects.get(pk="WCF_" + str(chapterNumber))
         citations = []
         for paragraph, c in citationIdsByParagraph.items():
             for citationID in citationIdsByParagraph[paragraph]:
                 # citationID[0] excludes the '.' character
                 parsedCitationID = citationID[0]
+                id = "WCF_" + str(chapterNumber) + "_" + str(paragraph) + "_" + parsedCitationID
                 scriptureReference = scriptureReferencesByCitationId[parsedCitationID]
-                passage = Passages.objects.get(pk=referenceId + "_" + str(paragraph))
+                passage = Passages.objects.get(pk="WCF_" + str(chapterNumber) + "_" + str(paragraph))
+                print("**************************", parsedCitationID)
                 citations.append({
-                    "id": referenceId + "_" + str(paragraph) + "_" + parsedCitationID,
+                    "id": id,
                     "passage": passage,
                     "heading": heading,
                     "confession": confession,
-                    "referenceIdentifier": parsedCitationID,
                     "scripture": scriptureReference,
+                    "referenceIdentifier": parsedCitationID,
                     "tags": []
                 })
 
@@ -76,7 +78,7 @@ class Command(BaseCommand):
     def write_to_db(self, citations):
         # Script is dependent on foreign key being in place in passages table. Must do passage import first.
         for c, citation in enumerate(citations):
-            newCitation = Citations(id=citation['id'], passage=citation['passage'], heading=citation['heading'], confession=citation['confession'],referenceIdentifier=citation['referenceIdentifier'],scripture=citation['scripture'],tags=citation['tags'])
+            newCitation = Citations(id=citation['id'], referenceIdentifier=citation['referenceIdentifier'], passage=citation['passage'], heading=citation['heading'], confession=citation['confession'], scripture=citation['scripture'], tags=citation['tags'])
             newCitation.save()
             successMsg = "Citation " + citation['id'] + " was successfully saved to database!"
             self.stdout.write(self.style.SUCCESS(successMsg))
@@ -87,9 +89,9 @@ class Command(BaseCommand):
         arrayOfWcfChapters = []
         wcf = open("confessional_christianity/confessional_christianity_api/data/WCF.txt").read().split('__WCF_CHAPTER__')
         for index, chapter in enumerate(wcf[1:]):
-            citationId = "WCF_" + str(index + 1)
+            chapterNumber = int(index) + 1
             chapter = chapter.replace('\n', ' ').split(' ')
-            citations = self.get_citations_for_chapter(chapter, citationId)
+            citations = self.get_citations_for_chapter(chapter, chapterNumber)
             self.write_to_db(citations)
         self.stdout.write(self.style.SUCCESS('Success!!'))
 

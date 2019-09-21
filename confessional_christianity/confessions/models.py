@@ -21,7 +21,7 @@ class Headings(models.Model):
     
     id = models.CharField(primary_key=True, max_length=1000)
     confession = models.ForeignKey(Confessions, on_delete=models.CASCADE)
-    position = models.IntegerField()
+    heading_number = models.IntegerField()
     title = models.TextField()
 
 class Passages(models.Model):
@@ -31,5 +31,6 @@ class Passages(models.Model):
     id = models.CharField(primary_key=True, max_length=1000)
     confession = models.ForeignKey(Confessions, on_delete=models.CASCADE)
     heading = models.ForeignKey(Headings, on_delete=models.CASCADE)
-    position = models.IntegerField()
+    passage_number = models.IntegerField()
+    heading_number = models.IntegerField(default=0)
     passage = models.TextField()
