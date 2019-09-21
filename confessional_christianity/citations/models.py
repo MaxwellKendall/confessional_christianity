@@ -14,7 +14,7 @@ class Citations(models.Model):
     confession = models.ForeignKey(Confessions, on_delete=models.CASCADE)
     heading = models.ForeignKey(Headings, on_delete=models.CASCADE)
     passage = models.ForeignKey(Passages, on_delete=models.CASCADE)
-    referenceIdentifier = JSONField()
+    referenceIdentifier = models.CharField(max_length=1000)
     scripture = ArrayField(models.TextField())
     tags = ArrayField(models.TextField())
 

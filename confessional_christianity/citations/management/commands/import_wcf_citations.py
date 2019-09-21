@@ -53,21 +53,24 @@ class Command(BaseCommand):
         citationIdsByParagraph = self.get_citation_ids_by_paragraph(arrayOfParagraphs)
         scriptureReferencesByCitationId = self.parse_proofs(arrayOfProofs)
         confession = Confessions.objects.get(pk="WCF")
-        heading = Headings.objects.get(pk=chapterNumber, confession=confession)
+        heading = Headings.objects.get(pk="WCF_" + str(chapterNumber))
         citations = []
         for paragraph, c in citationIdsByParagraph.items():
         # assuming there's not two citations with the id "a" for a given chapter... ? 
             for citationID in citationIdsByParagraph[paragraph]:
                 # citationID[0] excludes the '.' character
                 parsedCitationID = citationID[0]
+                id = "WCF_" + str(chapterNumber) + "_" + str(paragraph) + "_" + parsedCitationID
                 scriptureReference = scriptureReferencesByCitationId[parsedCitationID]
-                passage = Passages.objects.get(pk=paragraph, heading=chapterNumber, confession=confession)
+                passage = Passages.objects.get(pk="WCF_" + str(chapterNumber) + "_" + str(paragraph))
+                print("**************************", parsedCitationID)
                 citations.append({
-                    "id": parsedCitationID,
+                    "id": id,
                     "passage": passage,
                     "heading": heading,
                     "confession": confession,
                     "scripture": scriptureReference,
+                    "referenceIdentifier": parsedCitationID,
                     "tags": []
                 })
 
@@ -76,7 +79,7 @@ class Command(BaseCommand):
     def write_to_db(self, citations):
         # Script is dependent on foreign key being in place in passages table. Must do passage import first.
         for c, citation in enumerate(citations):
-            newCitation = Citations(id=citation['id'], passage=citation['passage'], heading=citation['heading'], confession=citation['confession'], scripture=citation['scripture'], tags=citation['tags'])
+            newCitation = Citations(id=citation['id'], referenceIdentifier=citation['referenceIdentifier'], passage=citation['passage'], heading=citation['heading'], confession=citation['confession'], scripture=citation['scripture'], tags=citation['tags'])
             newCitation.save()
             successMsg = "Citation " + citation['id'] + " was successfully saved to database!"
             self.stdout.write(self.style.SUCCESS(successMsg))

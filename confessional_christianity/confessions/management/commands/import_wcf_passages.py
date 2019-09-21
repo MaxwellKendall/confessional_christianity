@@ -35,18 +35,20 @@ class Command(BaseCommand):
         }
     def write_to_db(self, wcfArray):
         for index, chapter in enumerate(wcfArray):
-            heading_id = int(index) + 1
+            heading_number = str(int(index) + 1)
+            heading_id = "WCF_" + heading_number
             confession = Confessions.objects.get(pk="WCF")
-            newHeading = Headings(id=heading_id, confession=confession, title=chapter["title"])
+            newHeading = Headings(id=heading_id, heading_number=heading_number, confession=confession, title=chapter["title"])
             newHeading.save()
             successMsg = str(heading_id) + " heading successfully saved to the DB!"
             self.stdout.write(self.style.SUCCESS(successMsg))
             for index, passage in enumerate(chapter['paragraphs']):
-                passage_id = int(index) + 1
+                passage_number = str(int(index) + 1)
+                passage_id = "WCF_" + heading_number + "_" + passage_number
                 print("newHeading", newHeading)
-                newPassage = Passages(id=passage_id, heading=newHeading, confession=confession, passage=passage)
+                newPassage = Passages(id=passage_id, passage_number=passage_number, heading_number=heading_number, heading=newHeading, confession=confession, passage=passage)
                 newPassage.save()
-                successMsg = "Paragraph " + str(passage_id) + " of chapter " + str(heading_id) + " passage successfully saved to the DB!"
+                successMsg = "Paragraph " + passage_id + " of chapter " + heading_id + " passage successfully saved to the DB!"
                 self.stdout.write(self.style.SUCCESS(successMsg))
         successMsg = "All " + str(len(wcfArray)) + " chapters of the Westminster Confession of Faith have been successfully saved to the database!"
         self.stdout.write(self.style.SUCCESS(successMsg))
