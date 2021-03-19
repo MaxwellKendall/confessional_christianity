@@ -1,7 +1,7 @@
 astroid==2.2.5
 boto3==1.9.200
 botocore==1.12.200
-Django==2.2.4
+Django==2.2.18
 docutils==0.14
 isort==4.3.21
 jmespath==0.9.4
